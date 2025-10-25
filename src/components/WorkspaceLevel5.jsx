@@ -444,15 +444,7 @@ const WorkspaceLevel5 = ({
           </div>
         </div>
 
-        <div className="workspace-footer">
-          <div className="control-hint">
-            <span className="hint-item">🖱️ <strong>Move</strong> = Drag components</span>
-            <span className="hint-item">⚙️ <strong>State</strong> = Toggle ON/OFF</span>
-            <span className="hint-item">➡️ <strong>Arrow</strong> = Draw connections</span>
-            <span className="hint-item">🧠 <strong>Rules</strong> = Build IF-THEN logic</span>
-            <span className="hint-item">🗑️ <strong>Right-click</strong> = Remove</span>
-          </div>
-        </div>
+        
       </div>
 
       {/* Rule Builder Panel */}

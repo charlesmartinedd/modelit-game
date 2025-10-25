@@ -300,14 +300,7 @@ const WorkspaceLevel2 = ({ components, arrows, onRemoveComponent, onAddArrow, on
         </div>
       </div>
 
-      <div className="workspace-footer">
-        <div className="control-hint">
-          <span className="hint-item">🖱️ <strong>Drag</strong> = Move component</span>
-          <span className="hint-item">🎯 <strong>Click → Click</strong> = Draw arrow</span>
-          <span className="hint-item">🗑️ <strong>Right-click</strong> = Remove</span>
-          <span className="hint-item">✖️ <strong>Click arrow</strong> = Delete arrow</span>
-        </div>
-      </div>
+      
     </div>
   )
 }

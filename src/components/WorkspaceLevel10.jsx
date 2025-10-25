@@ -485,38 +485,7 @@ const WorkspaceLevel10 = ({
         </div>
       </div>
 
-      <div className="workspace-footer">
-        <div className="stats-summary">
-          <div className="stat-item">
-            <span className="stat-icon">🧩</span>
-            <span className="stat-value">{components.length}</span>
-            <span className="stat-label">Components</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-icon">➡️</span>
-            <span className="stat-value">{arrows.length}</span>
-            <span className="stat-label">Connections</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-icon">💡</span>
-            <span className="stat-value">{components.filter(c => c.state === 'ON').length}</span>
-            <span className="stat-label">Active</span>
-          </div>
-          {isMultiScale && (
-            <div className="stat-item">
-              <span className="stat-icon">🌐</span>
-              <span className="stat-value">{scales.length}</span>
-              <span className="stat-label">Scales</span>
-            </div>
-          )}
-        </div>
-        <div className="control-hint">
-          <span className="hint-item">🎓 <strong>Final Challenge</strong> = Use all your modeling skills!</span>
-          <span className="hint-item">🖱️ <strong>Build</strong> = Components + Arrows + States</span>
-          <span className="hint-item">🎯 <strong>Goal</strong> = Complete biological model</span>
-          <span className="hint-item">⭐ <strong>Finish</strong> = Master modeler!</span>
-        </div>
-      </div>
+      
     </div>
   )
 }

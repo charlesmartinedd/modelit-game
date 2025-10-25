@@ -461,14 +461,7 @@ const WorkspaceLevel9 = ({
         </div>
       </div>
 
-      <div className="workspace-footer">
-        <div className="control-hint">
-          <span className="hint-item">🔬 <strong>Multi-Scale</strong> = Connect different biological levels</span>
-          <span className="hint-item">🌐 <strong>Cross-Scale</strong> = Arrows can span scales</span>
-          <span className="hint-item">🖱️ <strong>Move</strong> = Drag components</span>
-          <span className="hint-item">🗑️ <strong>Right-click</strong> = Remove</span>
-        </div>
-      </div>
+      
     </div>
   )
 }

@@ -4,26 +4,36 @@
 }
 
 .game-content {
-  flex: 1;
   display: flex;
   gap: 24px;
   padding: 20px;
-  overflow: visible;
+  min-height: calc(100vh - 120px);
   max-height: calc(100vh - 120px);
+  overflow: hidden;
 }
 
 .left-panel {
+  flex: 0 0 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.right-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
+  overflow-y: visible;
+  max-height: 100%;
+  padding-bottom: 20px;
 }
 
-.right-panel {
-  flex: 1.5;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.right-panel > * {
+  flex-shrink: 0;
 }
 
 /* Confetti animation */
