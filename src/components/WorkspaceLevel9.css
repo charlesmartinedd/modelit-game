@@ -241,6 +241,7 @@
   border-radius: 12px;
   border: 2px dashed #d0d0d0;
   overflow: hidden;
+  min-height: 550px;
 }
 
 .arrows-layer {

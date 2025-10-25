@@ -8,7 +8,8 @@
   display: flex;
   gap: 24px;
   padding: 20px;
-  overflow: hidden;
+  overflow: visible;
+  max-height: calc(100vh - 120px);
 }
 
 .left-panel {

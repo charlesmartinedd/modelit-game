@@ -12,24 +12,12 @@ const WorkspaceLevel4 = ({ components, arrows, onRemoveComponent, onAddArrow, on
   const [selectedComponent, setSelectedComponent] = useState(null)
   const workspaceRef = useRef(null)
 
-  // Auto-position components when added
+  // Clean up positions for removed components
   useEffect(() => {
+    const currentIds = new Set(components.map(c => c.id))
     const newPositions = { ...componentPositions }
     let hasChanges = false
 
-    components.forEach((component, index) => {
-      if (!newPositions[component.id]) {
-        const col = index % 3
-        const row = Math.floor(index / 3)
-        newPositions[component.id] = {
-          x: 50 + col * 150,
-          y: 50 + row * 150
-        }
-        hasChanges = true
-      }
-    })
-
-    const currentIds = new Set(components.map(c => c.id))
     Object.keys(newPositions).forEach(id => {
       if (!currentIds.has(id)) {
         delete newPositions[id]
@@ -161,8 +149,38 @@ const WorkspaceLevel4 = ({ components, arrows, onRemoveComponent, onAddArrow, on
 
   const arrowPreview = drawingArrow ? getArrowPreviewPath() : null
 
+  // Handle drop from palette
+  const handleDrop = (e) => {
+    e.preventDefault()
+    try {
+      const componentData = JSON.parse(e.dataTransfer.getData('application/json'))
+      const rect = workspaceRef.current.getBoundingClientRect()
+      const x = e.clientX - rect.left - 50 // Center on drop point
+      const y = e.clientY - rect.top - 50
+
+      // Call parent's add callback - need to use correct prop
+      // GameEngine passes onAdd via ComponentPalette pattern
+      if (typeof window.currentLevelAddComponent === 'function') {
+        window.currentLevelAddComponent({ ...componentData, _dropPosition: { x, y } })
+      }
+    } catch (err) {
+      console.error('Drop error:', err)
+    }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'copy'
+  }
+
   return (
-    <div className="workspace-level4" ref={workspaceRef} onClick={handleWorkspaceClick}>
+    <div
+      className="workspace-level4"
+      ref={workspaceRef}
+      onClick={handleWorkspaceClick}
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+    >
       <div className="workspace-header">
         <div className="header-top">
           <h3>Your Model</h3>

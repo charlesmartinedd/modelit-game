@@ -59,8 +59,8 @@ const GoalPanel = ({ goalState }) => {
         <div className="hint-icon">💡</div>
         <p className="hint-text">
           {hasArrows
-            ? 'Add components, then click to draw arrows between them!'
-            : 'Tap the icons below to add them to your workspace!'}
+            ? 'Drag components to the canvas, then draw arrows between them!'
+            : 'Drag components from the palette below to build your model!'}
         </p>
       </div>
     </div>

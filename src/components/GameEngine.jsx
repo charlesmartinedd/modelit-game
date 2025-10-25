@@ -70,6 +70,14 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
 
   const iteration = iterations[currentIteration]
 
+  // Expose addComponent globally for drag-drop from workspaces
+  useEffect(() => {
+    window.currentLevelAddComponent = addComponent
+    return () => {
+      delete window.currentLevelAddComponent
+    }
+  }, [])
+
   // Timer logic
   useEffect(() => {
     if (!isTimerActive || timeRemaining <= 0) return
@@ -187,9 +195,14 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
     }
   }
 
-  const addComponent = (component) => {
+  const addComponent = (component, position = null) => {
     soundManager.addComponent()
-    setStudentModel(prev => [...prev, { ...component, id: Date.now() }])
+    const newComponent = {
+      ...component,
+      id: Date.now() + Math.random(), // Ensure unique ID
+      _dropPosition: component._dropPosition || position // Preserve drop position
+    }
+    setStudentModel(prev => [...prev, newComponent])
   }
 
   const removeComponent = (id) => {

@@ -9,6 +9,7 @@ const WorkspaceLevel6 = ({
   onAddArrow,
   onRemoveArrow,
   onUpdateComponentState,
+  onAddComponent,
   expectedOutcome = []
 }) => {
   const [mode, setMode] = useState('move')
@@ -29,24 +30,12 @@ const WorkspaceLevel6 = ({
   const workspaceRef = useRef(null)
   const simulationIntervalRef = useRef(null)
 
-  // Auto-position components when added
+  // Clean up positions for removed components
   useEffect(() => {
+    const currentIds = new Set(components.map(c => c.id))
     const newPositions = { ...componentPositions }
     let hasChanges = false
 
-    components.forEach((component, index) => {
-      if (!newPositions[component.id]) {
-        const col = index % 3
-        const row = Math.floor(index / 3)
-        newPositions[component.id] = {
-          x: 50 + col * 150,
-          y: 50 + row * 150
-        }
-        hasChanges = true
-      }
-    })
-
-    const currentIds = new Set(components.map(c => c.id))
     Object.keys(newPositions).forEach(id => {
       if (!currentIds.has(id)) {
         delete newPositions[id]
@@ -288,6 +277,27 @@ const WorkspaceLevel6 = ({
     }
   }
 
+  const handleDrop = (e) => {
+    e.preventDefault()
+    const componentData = JSON.parse(e.dataTransfer.getData('application/json'))
+    const rect = workspaceRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left - 50
+    const y = e.clientY - rect.top - 50
+
+    const tempId = Date.now()
+    setComponentPositions(prev => ({
+      ...prev,
+      [tempId]: { x, y }
+    }))
+
+    onAddComponent(componentData)
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'copy'
+  }
+
   const getArrowPath = (fromId, toId) => {
     const fromEl = document.getElementById(`component-${fromId}`)
     const toEl = document.getElementById(`component-${toId}`)
@@ -325,7 +335,13 @@ const WorkspaceLevel6 = ({
 
   return (
     <div className="workspace-level6">
-      <div className="main-workspace" ref={workspaceRef} onClick={handleWorkspaceClick}>
+      <div
+        className="main-workspace"
+        ref={workspaceRef}
+        onClick={handleWorkspaceClick}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
         <div className="workspace-header">
           <div className="header-top">
             <h3>Your Model</h3>

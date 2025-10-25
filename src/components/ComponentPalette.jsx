@@ -4,10 +4,34 @@ import './ComponentPalette.css'
 
 const ComponentPalette = ({ availableComponents, onAdd }) => {
   const [selectedId, setSelectedId] = React.useState(null)
+  const [isDragging, setIsDragging] = React.useState(false)
 
+  const handleDragStart = (e, component) => {
+    setIsDragging(true)
+    setSelectedId(component.icon)
+
+    // Set drag data
+    e.dataTransfer.effectAllowed = 'copy'
+    e.dataTransfer.setData('application/json', JSON.stringify(component))
+
+    // Create custom drag image
+    const dragImage = e.currentTarget.cloneNode(true)
+    dragImage.style.opacity = '0.7'
+    dragImage.style.transform = 'scale(1.2)'
+    document.body.appendChild(dragImage)
+    e.dataTransfer.setDragImage(dragImage, 50, 50)
+    setTimeout(() => document.body.removeChild(dragImage), 0)
+  }
+
+  const handleDragEnd = () => {
+    setIsDragging(false)
+    setTimeout(() => setSelectedId(null), 300)
+  }
+
+  // Fallback: Still support clicking for touch devices
   const handleClick = (component) => {
     setSelectedId(component.icon)
-    onAdd(component)
+    onAdd(component, null) // null position = use default
 
     // Visual feedback
     setTimeout(() => setSelectedId(null), 300)
@@ -22,30 +46,24 @@ const ComponentPalette = ({ availableComponents, onAdd }) => {
 
       <div className="palette-items">
         {availableComponents.map((component, index) => (
-          <motion.button
+          <div
             key={component.icon + index}
-            className={`palette-item ${selectedId === component.icon ? 'selected' : ''}`}
+            className={`palette-item ${selectedId === component.icon ? 'selected' : ''} ${isDragging ? 'dragging' : ''}`}
+            draggable={true}
+            onDragStart={(e) => handleDragStart(e, component)}
+            onDragEnd={handleDragEnd}
             onClick={() => handleClick(component)}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{
-              delay: index * 0.05,
-              type: 'spring',
-              stiffness: 300,
-              damping: 20
-            }}
-            whileHover={{ scale: 1.1, y: -4 }}
-            whileTap={{ scale: 0.9 }}
+            style={{ cursor: 'grab' }}
           >
             <div className="palette-icon emoji">{component.icon}</div>
             <div className="palette-label">{component.label}</div>
-          </motion.button>
+          </div>
         ))}
       </div>
 
       <div className="palette-hint">
-        <div className="hint-icon">✨</div>
-        <p>Tap any component to add it!</p>
+        <div className="hint-icon">🎯</div>
+        <p>Drag components to the canvas!</p>
       </div>
     </div>
   )

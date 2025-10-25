@@ -5,6 +5,7 @@ const WorkspaceLevel10 = ({
   components,
   arrows,
   onRemoveComponent,
+  onAddComponent,
   onAddArrow,
   onRemoveArrow,
   onUpdateComponentState,
@@ -43,24 +44,12 @@ const WorkspaceLevel10 = ({
       })
     : arrows
 
-  // Auto-position components when added
+  // Clean up positions for removed components
   useEffect(() => {
+    const currentIds = new Set(components.map(c => c.id))
     const newPositions = { ...componentPositions }
     let hasChanges = false
 
-    visibleComponents.forEach((component, index) => {
-      if (!newPositions[component.id]) {
-        const col = index % 4
-        const row = Math.floor(index / 4)
-        newPositions[component.id] = {
-          x: 40 + col * 140,
-          y: 40 + row * 140
-        }
-        hasChanges = true
-      }
-    })
-
-    const currentIds = new Set(components.map(c => c.id))
     Object.keys(newPositions).forEach(id => {
       if (!currentIds.has(id)) {
         delete newPositions[id]
@@ -71,7 +60,7 @@ const WorkspaceLevel10 = ({
     if (hasChanges) {
       setComponentPositions(newPositions)
     }
-  }, [components, activeScale])
+  }, [components])
 
   // Handle mouse move
   useEffect(() => {
@@ -153,6 +142,30 @@ const WorkspaceLevel10 = ({
     if (selectedComponent) {
       setSelectedComponent(null)
     }
+  }
+
+  // Drag and drop handlers
+  const handleDrop = (e) => {
+    e.preventDefault()
+    const componentData = JSON.parse(e.dataTransfer.getData('application/json'))
+    const rect = workspaceRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left - 50
+    const y = e.clientY - rect.top - 50
+
+    const tempId = Date.now()
+    setComponentPositions(prev => ({
+      ...prev,
+      [tempId]: { x, y }
+    }))
+
+    if (onAddComponent) {
+      onAddComponent(componentData)
+    }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'copy'
   }
 
   const handleStateChange = (componentId, newState) => {
@@ -315,7 +328,13 @@ const WorkspaceLevel10 = ({
         </div>
       </div>
 
-      <div className="canvas-container" ref={workspaceRef} onClick={handleWorkspaceClick}>
+      <div
+        className="canvas-container"
+        ref={workspaceRef}
+        onClick={handleWorkspaceClick}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
         <svg className="arrows-layer">
           {visibleArrows.map((arrow, index) => {
             const path = getArrowPath(arrow.fromId, arrow.toId)

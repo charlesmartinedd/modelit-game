@@ -152,6 +152,30 @@ const WorkspaceLevel8 = ({ iterationData, onModelFixed }) => {
     setSelectedArrow(null)
   }
 
+  // Drag and drop handlers
+  const handleDrop = (e) => {
+    e.preventDefault()
+    const componentData = JSON.parse(e.dataTransfer.getData('application/json'))
+    const rect = workspaceRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left - 50
+    const y = e.clientY - rect.top - 50
+
+    const tempId = Date.now()
+    setComponentPositions(prev => ({
+      ...prev,
+      [tempId]: { x, y }
+    }))
+
+    if (onAddComponent) {
+      onAddComponent(componentData)
+    }
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'copy'
+  }
+
   const getArrowPath = (fromLabel, toLabel, containerRef) => {
     const fromEl = document.getElementById(`current-component-${fromLabel}`)
     const toEl = document.getElementById(`current-component-${toLabel}`)
@@ -236,7 +260,12 @@ const WorkspaceLevel8 = ({ iterationData, onModelFixed }) => {
           <div className="panel-header">
             <h4>Current Model (Fix This!)</h4>
           </div>
-          <div className="model-workspace" ref={workspaceRef}>
+          <div
+            className="model-workspace"
+            ref={workspaceRef}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          >
             <svg className="arrows-layer">
               {currentModel.arrows.map((arrow, index) => {
                 const path = getArrowPath(arrow.from, arrow.to, workspaceRef.current)
