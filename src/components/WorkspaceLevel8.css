@@ -1,0 +1,630 @@
+/* WorkspaceLevel8.css - Debugging Interface */
+
+.workspace-level8 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.workspace-level8 .workspace-header {
+  background: linear-gradient(135deg, #232323 0%, #0d75bb 100%);
+  color: white;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #0d75bb;
+}
+
+.workspace-level8 .header-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.workspace-level8 .header-subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+}
+
+.workspace-level8 .hint-button {
+  background: linear-gradient(135deg, #f39c12 0%, #E67E22 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(230, 126, 34, 0.3);
+}
+
+.workspace-level8 .hint-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4);
+}
+
+.workspace-level8 .hint-icon {
+  font-size: 16px;
+  animation: pulse 2s infinite;
+}
+
+/* Hint Banner */
+.workspace-level8 .hint-banner {
+  background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%);
+  border-bottom: 3px solid #f39c12;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.workspace-level8 .hint-banner .hint-icon {
+  font-size: 24px;
+}
+
+.workspace-level8 .hint-banner p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #232323;
+  font-weight: 500;
+}
+
+/* Behavior Section */
+.workspace-level8 .behavior-section {
+  display: flex;
+  gap: 20px;
+  padding: 20px 30px;
+  background: linear-gradient(135deg, #f2f2f2 0%, #e8e8e8 100%);
+  border-bottom: 2px solid #ddd;
+}
+
+.workspace-level8 .behavior-card {
+  flex: 1;
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.workspace-level8 .behavior-card.expected {
+  border-left: 4px solid #27ae60;
+}
+
+.workspace-level8 .behavior-card.actual {
+  border-left: 4px solid #e74c3c;
+}
+
+.workspace-level8 .behavior-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.workspace-level8 .behavior-icon {
+  font-size: 20px;
+}
+
+.workspace-level8 .behavior-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #232323;
+}
+
+.workspace-level8 .behavior-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #232323;
+  font-weight: 500;
+}
+
+/* Models Container */
+.workspace-level8 .models-container {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.workspace-level8 .model-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.workspace-level8 .model-panel.current {
+  border: 3px solid #E67E22;
+}
+
+.workspace-level8 .model-panel.goal {
+  border: 3px solid #27ae60;
+}
+
+.workspace-level8 .panel-header {
+  background: linear-gradient(135deg, #232323 0%, #444 100%);
+  color: white;
+  padding: 15px 20px;
+  border-bottom: 2px solid #ddd;
+}
+
+.workspace-level8 .model-panel.current .panel-header {
+  background: linear-gradient(135deg, #E67E22 0%, #f39c12 100%);
+}
+
+.workspace-level8 .model-panel.goal .panel-header {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+}
+
+.workspace-level8 .panel-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Model Workspace */
+.workspace-level8 .model-workspace {
+  position: relative;
+  flex: 1;
+  min-height: 350px;
+  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  overflow: hidden;
+}
+
+.workspace-level8 .arrows-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.workspace-level8 .arrow-group {
+  cursor: pointer;
+  pointer-events: all;
+  transition: all 0.3s ease;
+}
+
+.workspace-level8 .arrow-group:hover .arrow-line,
+.workspace-level8 .arrow-group:hover .arrow-head {
+  filter: brightness(1.2);
+  stroke-width: 4;
+}
+
+.workspace-level8 .arrow-group.selected .arrow-line {
+  stroke-dasharray: 8, 4;
+  animation: dashMove 1s linear infinite;
+}
+
+.workspace-level8 .arrow-group.selected .arrow-head {
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.workspace-level8 .arrow-line {
+  transition: all 0.2s ease;
+}
+
+.workspace-level8 .arrow-head {
+  transition: all 0.2s ease;
+}
+
+.workspace-level8 .components-layer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.workspace-level8 .model-component {
+  position: absolute;
+  background: white;
+  border: 3px solid #ddd;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-width: 90px;
+}
+
+.workspace-level8 .model-component:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #0d75bb;
+}
+
+.workspace-level8 .model-component.selected {
+  border-color: #0d75bb;
+  background: linear-gradient(135deg, rgba(13, 117, 187, 0.08), rgba(82, 167, 224, 0.08));
+  box-shadow: 0 4px 16px rgba(13, 117, 187, 0.3);
+  transform: scale(1.05);
+}
+
+.workspace-level8 .model-component.state-on {
+  border-color: #27ae60;
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.05), white);
+}
+
+.workspace-level8 .model-component.state-off {
+  border-color: #999;
+  background: linear-gradient(135deg, rgba(120, 120, 120, 0.05), white);
+}
+
+.workspace-level8 .component-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.workspace-level8 .component-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #232323;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.workspace-level8 .state-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.workspace-level8 .state-badge.on {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: white;
+}
+
+.workspace-level8 .state-badge.off {
+  background: linear-gradient(135deg, #999 0%, #bbb 100%);
+  color: white;
+}
+
+/* Tools Panel */
+.workspace-level8 .tools-panel {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+  border-top: 2px solid #f39c12;
+  padding: 15px;
+  animation: slideUp 0.3s ease-out;
+}
+
+.workspace-level8 .tool-group h5 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #232323;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.workspace-level8 .tool-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.workspace-level8 .tool-btn {
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.workspace-level8 .tool-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.workspace-level8 .tool-btn.delete {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.workspace-level8 .tool-btn.delete:hover {
+  background: linear-gradient(135deg, #e74c3c 0%, #ec7063 100%);
+  color: white;
+}
+
+.workspace-level8 .tool-btn.flip {
+  border-color: #0d75bb;
+  color: #0d75bb;
+}
+
+.workspace-level8 .tool-btn.flip:hover {
+  background: linear-gradient(135deg, #0d75bb 0%, #52a7e0 100%);
+  color: white;
+}
+
+.workspace-level8 .tool-btn.type {
+  border-color: #f39c12;
+  color: #f39c12;
+}
+
+.workspace-level8 .tool-btn.type:hover {
+  background: linear-gradient(135deg, #f39c12 0%, #E67E22 100%);
+  color: white;
+}
+
+.workspace-level8 .tool-btn.state {
+  border-color: #27ae60;
+  color: #27ae60;
+}
+
+.workspace-level8 .tool-btn.state:hover {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: white;
+}
+
+/* Actions Section */
+.workspace-level8 .actions-section {
+  padding: 20px 30px;
+  background: linear-gradient(135deg, #f2f2f2 0%, #e8e8e8 100%);
+  border-top: 2px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.workspace-level8 .check-button {
+  background: linear-gradient(135deg, #0d75bb 0%, #52a7e0 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(13, 117, 187, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  align-self: center;
+}
+
+.workspace-level8 .check-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(13, 117, 187, 0.4);
+}
+
+/* Result Feedback */
+.workspace-level8 .result-feedback {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 10px;
+  animation: scaleIn 0.5s ease-out;
+}
+
+.workspace-level8 .result-feedback.correct {
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(46, 204, 113, 0.1));
+  border: 3px solid #27ae60;
+}
+
+.workspace-level8 .result-feedback.incorrect {
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(236, 112, 99, 0.1));
+  border: 3px solid #e74c3c;
+}
+
+.workspace-level8 .result-icon {
+  font-size: 48px;
+  animation: bounce 0.8s ease-out;
+}
+
+.workspace-level8 .result-text h4 {
+  margin: 0 0 5px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.workspace-level8 .result-feedback.correct h4 {
+  color: #27ae60;
+}
+
+.workspace-level8 .result-feedback.incorrect h4 {
+  color: #e74c3c;
+}
+
+.workspace-level8 .result-text p {
+  margin: 0;
+  font-size: 15px;
+  color: #232323;
+  font-weight: 500;
+}
+
+/* Footer */
+.workspace-level8 .workspace-footer {
+  background: linear-gradient(135deg, #f2f2f2 0%, #e8e8e8 100%);
+  padding: 16px 30px;
+  border-top: 2px solid #ddd;
+}
+
+.workspace-level8 .instructions {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.workspace-level8 .instruction-item {
+  font-size: 13px;
+  color: #232323;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes dashMove {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 24;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .workspace-level8 .models-container {
+    flex-direction: column;
+  }
+
+  .workspace-level8 .model-panel {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .workspace-level8 .workspace-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 15px 20px;
+  }
+
+  .workspace-level8 .header-content h3 {
+    font-size: 20px;
+  }
+
+  .workspace-level8 .behavior-section {
+    flex-direction: column;
+    padding: 15px 20px;
+    gap: 15px;
+  }
+
+  .workspace-level8 .models-container {
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .workspace-level8 .model-workspace {
+    min-height: 250px;
+  }
+
+  .workspace-level8 .tool-buttons {
+    flex-direction: column;
+  }
+
+  .workspace-level8 .tool-btn {
+    width: 100%;
+  }
+
+  .workspace-level8 .instructions {
+    gap: 15px;
+  }
+
+  .workspace-level8 .instruction-item {
+    font-size: 12px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .workspace-level8 * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

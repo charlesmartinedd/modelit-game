@@ -4,6 +4,14 @@ import GameHeader from './GameHeader'
 import GoalPanel from './GoalPanel'
 import Workspace from './Workspace'
 import WorkspaceLevel2 from './WorkspaceLevel2'
+import WorkspaceLevel3 from './WorkspaceLevel3'
+import WorkspaceLevel4 from './WorkspaceLevel4'
+import WorkspaceLevel5 from './WorkspaceLevel5'
+import WorkspaceLevel6 from './WorkspaceLevel6'
+import WorkspaceLevel7 from './WorkspaceLevel7'
+import WorkspaceLevel8 from './WorkspaceLevel8'
+import WorkspaceLevel9 from './WorkspaceLevel9'
+import WorkspaceLevel10 from './WorkspaceLevel10'
 import ComponentPalette from './ComponentPalette'
 import SuccessModal from './SuccessModal'
 import soundManager from '../utils/sounds'
@@ -52,6 +60,8 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
   const [currentIteration, setCurrentIteration] = useState(0)
   const [studentModel, setStudentModel] = useState([])
   const [studentArrows, setStudentArrows] = useState([]) // For Level 2+
+  const [studentRules, setStudentRules] = useState([]) // For Level 5+
+  const [selectedAnswer, setSelectedAnswer] = useState(null) // For Level 7
   const [points, setPoints] = useState(0)
   const [streak, setStreak] = useState(0)
   const [timeRemaining, setTimeRemaining] = useState(level >= 2 ? 60 : 30) // More time for levels with arrows
@@ -113,12 +123,26 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
     // For Level 2+, also check arrows
     if (studentArrows.length !== goalArrows.length) return
 
-    const arrowsMatch = goalArrows.every(goalArrow =>
-      studentArrows.some(studentArrow =>
-        studentArrow.from === goalArrow.from &&
-        studentArrow.to === goalArrow.to
-      )
-    )
+    // Fuzzy matching for arrows - match by component labels
+    const arrowsMatch = goalArrows.every(goalArrow => {
+      return studentArrows.some(studentArrow => {
+        // Find components by label matching
+        const fromMatch = studentModel.find(c =>
+          c.label.toLowerCase().includes(goalArrow.from.toLowerCase()) ||
+          goalArrow.from.toLowerCase().includes(c.label.toLowerCase())
+        )
+        const toMatch = studentModel.find(c =>
+          c.label.toLowerCase().includes(goalArrow.to.toLowerCase()) ||
+          goalArrow.to.toLowerCase().includes(c.label.toLowerCase())
+        )
+
+        // Check if arrow connects the right components
+        return fromMatch && toMatch &&
+               studentArrow.from === fromMatch.label &&
+               studentArrow.to === toMatch.label &&
+               (!goalArrow.type || studentArrow.type === goalArrow.type)
+      })
+    })
 
     if (arrowsMatch) {
       handleSuccess()
@@ -187,6 +211,31 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
     ))
   }
 
+  const updateComponentState = (componentId, newState) => {
+    soundManager.click()
+    setStudentModel(prev => prev.map(c =>
+      c.id === componentId ? { ...c, state: newState } : c
+    ))
+  }
+
+  const addRule = (rule) => {
+    soundManager.addComponent()
+    setStudentRules(prev => [...prev, rule])
+  }
+
+  const removeRule = (ruleIndex) => {
+    soundManager.removeComponent()
+    setStudentRules(prev => prev.filter((_, index) => index !== ruleIndex))
+  }
+
+  const handleAnswerSelect = (answer) => {
+    setSelectedAnswer(answer)
+    // Check answer for Level 7
+    if (answer === iteration.goalState.correctAnswer) {
+      handleSuccess()
+    }
+  }
+
   const triggerConfetti = () => {
     const colors = ['#0d75bb', '#E67E22', '#27ae60', '#f39c12']
     const confettiCount = 50
@@ -232,12 +281,15 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          {level === 1 ? (
+          {/* Render appropriate workspace for each level */}
+          {level === 1 && (
             <Workspace
               components={studentModel}
               onRemove={removeComponent}
             />
-          ) : level === 2 ? (
+          )}
+
+          {level === 2 && (
             <WorkspaceLevel2
               components={studentModel}
               arrows={studentArrows}
@@ -245,17 +297,100 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
               onAddArrow={addArrow}
               onRemoveArrow={removeArrow}
             />
-          ) : (
-            <Workspace
+          )}
+
+          {level === 3 && (
+            <WorkspaceLevel3
               components={studentModel}
-              onRemove={removeComponent}
+              arrows={studentArrows}
+              onRemoveComponent={removeComponent}
+              onAddArrow={addArrow}
+              onRemoveArrow={removeArrow}
             />
           )}
 
-          <ComponentPalette
-            availableComponents={iteration.availableComponents}
-            onAdd={addComponent}
-          />
+          {level === 4 && (
+            <WorkspaceLevel4
+              components={studentModel}
+              arrows={studentArrows}
+              onRemoveComponent={removeComponent}
+              onAddArrow={addArrow}
+              onRemoveArrow={removeArrow}
+              onUpdateComponentState={updateComponentState}
+            />
+          )}
+
+          {level === 5 && (
+            <WorkspaceLevel5
+              components={studentModel}
+              arrows={studentArrows}
+              rules={studentRules}
+              onRemoveComponent={removeComponent}
+              onAddArrow={addArrow}
+              onRemoveArrow={removeArrow}
+              onUpdateComponentState={updateComponentState}
+              onAddRule={addRule}
+              onRemoveRule={removeRule}
+            />
+          )}
+
+          {level === 6 && (
+            <WorkspaceLevel6
+              components={studentModel}
+              arrows={studentArrows}
+              onRemoveComponent={removeComponent}
+              onAddArrow={addArrow}
+              onRemoveArrow={removeArrow}
+              onUpdateComponentState={updateComponentState}
+              goalState={iteration.goalState}
+            />
+          )}
+
+          {level === 7 && (
+            <WorkspaceLevel7
+              iteration={iteration}
+              onAnswerSelect={handleAnswerSelect}
+              selectedAnswer={selectedAnswer}
+            />
+          )}
+
+          {level === 8 && (
+            <WorkspaceLevel8
+              iteration={iteration}
+              onComplete={handleSuccess}
+            />
+          )}
+
+          {level === 9 && (
+            <WorkspaceLevel9
+              components={studentModel}
+              arrows={studentArrows}
+              onRemoveComponent={removeComponent}
+              onAddArrow={addArrow}
+              onRemoveArrow={removeArrow}
+              onUpdateComponentState={updateComponentState}
+            />
+          )}
+
+          {level === 10 && (
+            <WorkspaceLevel10
+              components={studentModel}
+              arrows={studentArrows}
+              onRemoveComponent={removeComponent}
+              onAddArrow={addArrow}
+              onRemoveArrow={removeArrow}
+              onUpdateComponentState={updateComponentState}
+              scenario={iteration.scenario || iteration.hint}
+            />
+          )}
+
+          {/* Show component palette for levels that need it (1-6, 9-10) */}
+          {(level >= 1 && level <= 6) || level === 9 || level === 10 ? (
+            <ComponentPalette
+              availableComponents={iteration.availableComponents}
+              onAdd={addComponent}
+            />
+          ) : null}
         </motion.div>
       </div>
 
