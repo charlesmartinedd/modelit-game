@@ -270,8 +270,7 @@ const WorkspaceLevel2 = ({ components, arrows, onRemoveComponent, onAddArrow, on
                     top: `${position.y}px`,
                     cursor: mode === 'move' ? 'move' : 'pointer'
                   }}
-                  onMouseDown={(e) => mode === 'move' && handleComponentMouseDown(component, e)}
-                  onClick={(e) => mode === 'arrow' && handleComponentMouseDown(component, e)}
+                  onMouseDown={(e) => handleComponentMouseDown(component, e)}
                   onContextMenu={(e) => handleComponentRightClick(component, e)}
                   title={mode === 'move' ? 'Drag to move • Right-click to remove' : 'Click to draw arrow • Right-click to remove'}
                 >

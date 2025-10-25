@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/modelit-game/',
+  base: process.env.NODE_ENV === 'production' ? '/modelit-game/' : '/',
   server: {
     port: 3000,
     open: true

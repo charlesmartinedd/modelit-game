@@ -54,7 +54,7 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
   const [studentArrows, setStudentArrows] = useState([]) // For Level 2+
   const [points, setPoints] = useState(0)
   const [streak, setStreak] = useState(0)
-  const [timeRemaining, setTimeRemaining] = useState(30)
+  const [timeRemaining, setTimeRemaining] = useState(level >= 2 ? 60 : 30) // More time for levels with arrows
   const [showSuccess, setShowSuccess] = useState(false)
   const [isTimerActive, setIsTimerActive] = useState(true)
 
@@ -155,7 +155,7 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
       setCurrentIteration(prev => prev + 1)
       setStudentModel([])
       setStudentArrows([])
-      setTimeRemaining(30)
+      setTimeRemaining(level >= 2 ? 60 : 30) // Reset with more time for levels with arrows
       setIsTimerActive(true)
     } else {
       // Level complete!
