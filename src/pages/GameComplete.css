@@ -1,0 +1,194 @@
+.game-complete-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #232323 0%, #0d75bb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+.complete-container {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+.trophy-animation {
+  font-size: 150px;
+  margin-bottom: 30px;
+  filter: drop-shadow(0 8px 24px rgba(255, 215, 0, 0.5));
+  animation: trophy-float 3s ease-in-out infinite;
+}
+
+@keyframes trophy-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.complete-title {
+  font-size: 64px;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 20px 0;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.complete-subtitle {
+  font-size: 24px;
+  color: #eee;
+  margin: 0 0 50px 0;
+  line-height: 1.5;
+}
+
+.stats-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-bottom: 50px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 32px 24px;
+}
+
+.stat-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.stat-value {
+  font-size: 48px;
+  font-weight: 700;
+  color: #E67E22;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 16px;
+  color: #eee;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.achievement-list {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 40px;
+}
+
+.achievement-list h3 {
+  font-size: 24px;
+  color: white;
+  margin: 0 0 24px 0;
+}
+
+.achievements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.achievement-item {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 16px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.complete-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 18px 48px;
+  border-radius: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.action-button.primary {
+  background: linear-gradient(135deg, #E67E22 0%, #f39c12 100%);
+  color: white;
+  box-shadow: 0 8px 24px rgba(230, 126, 34, 0.4);
+}
+
+.action-button.primary:hover {
+  box-shadow: 0 12px 32px rgba(230, 126, 34, 0.5);
+  transform: translateY(-2px);
+}
+
+.action-button.secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+.action-button.secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.footer-text {
+  color: #eee;
+  font-size: 18px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .complete-title {
+    font-size: 48px;
+  }
+
+  .complete-subtitle {
+    font-size: 18px;
+  }
+
+  .trophy-animation {
+    font-size: 100px;
+  }
+
+  .stats-display {
+    grid-template-columns: 1fr;
+  }
+
+  .achievements {
+    grid-template-columns: 1fr;
+  }
+
+  .complete-actions {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+  }
+}
