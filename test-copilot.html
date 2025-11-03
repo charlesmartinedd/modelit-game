@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Copilot Test</title>
+    
+    <!-- Inline CSS for styling -->
+    <style>
+        /* Reset default margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling with gradient background */
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        /* Container for centered content */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        /* Fade in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header styling */
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        /* Paragraph styling */
+        p {
+            color: #4a5568;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* Timestamp styling */
+        .timestamp {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Responsive design for mobile devices */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .timestamp {
+                font-size: 0.9rem;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main content container -->
+    <div class="container">
+        <!-- Header with emoji -->
+        <h1>Hello from GitHub Copilot! 🤖</h1>
+        
+        <!-- Description paragraph -->
+        <p>This file was created by GitHub Copilot Coding Agent running in the cloud.</p>
+        
+        <!-- Timestamp display (populated by JavaScript) -->
+        <div class="timestamp" id="timestamp">Loading timestamp...</div>
+    </div>
+
+    <!-- JavaScript for displaying current timestamp -->
+    <script>
+        // Function to format and display current timestamp
+        function displayTimestamp() {
+            // Get current date and time
+            const now = new Date();
+            
+            // Format options for readable timestamp
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short'
+            };
+            
+            // Format the timestamp
+            const formattedTimestamp = now.toLocaleString('en-US', options);
+            
+            // Display in the timestamp element
+            document.getElementById('timestamp').textContent = formattedTimestamp;
+        }
+        
+        // Display timestamp when page loads
+        displayTimestamp();
+        
+        // Update timestamp every second for real-time display
+        setInterval(displayTimestamp, 1000);
+    </script>
+</body>
+</html>
