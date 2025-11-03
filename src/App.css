@@ -5,18 +5,17 @@
 
 .game-content {
   display: flex;
-  gap: 24px;
-  padding: 20px;
-  min-height: calc(100vh - 120px);
-  max-height: calc(100vh - 120px);
+  gap: 16px;
+  padding: 16px;
+  min-height: calc(100vh - 100px);
   overflow: hidden;
 }
 
 .left-panel {
-  flex: 0 0 380px;
+  flex: 0 0 340px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   overflow-y: auto;
   max-height: 100%;
 }
@@ -25,11 +24,11 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   min-width: 0;
-  overflow-y: visible;
+  overflow-y: auto;
   max-height: 100%;
-  padding-bottom: 20px;
+  padding-bottom: 0;
 }
 
 .right-panel > * {
