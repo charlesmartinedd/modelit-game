@@ -27,8 +27,19 @@ const LandingPage = ({ onStart, onLevelSelect }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          Master the fundamentals of biological modeling
+          🎮 Master the fundamentals of biological modeling through fun, interactive gameplay!
         </motion.p>
+
+        <motion.div
+          className="stats-banner"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <div className="stat-pill">⚡ Instant Feedback</div>
+          <div className="stat-pill">🎯 50 Challenges</div>
+          <div className="stat-pill">🏆 10 Levels</div>
+        </motion.div>
 
         <motion.div
           className="levels-preview"
@@ -79,11 +90,37 @@ const LandingPage = ({ onStart, onLevelSelect }) => {
           <motion.button
             className="start-button"
             onClick={onStart}
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, boxShadow: "0 12px 40px rgba(102, 126, 234, 0.5)" }}
             whileTap={{ scale: 0.95 }}
+            animate={{
+              boxShadow: [
+                "0 8px 24px rgba(102, 126, 234, 0.4)",
+                "0 8px 32px rgba(102, 126, 234, 0.6)",
+                "0 8px 24px rgba(102, 126, 234, 0.4)"
+              ]
+            }}
+            transition={{
+              boxShadow: {
+                duration: 2,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }
+            }}
           >
-            <span>Start Training</span>
-            <span className="start-icon">🚀</span>
+            <span>🚀 Start Your Journey</span>
+            <motion.span
+              className="start-icon"
+              animate={{
+                x: [0, 4, 0],
+                rotate: [0, -10, 10, 0]
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity
+              }}
+            >
+              →
+            </motion.span>
           </motion.button>
 
           <p className="subtext">

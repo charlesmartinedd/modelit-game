@@ -1,8 +1,51 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import './SuccessModal.css'
 
+const getSuccessMessage = (streak) => {
+  const messages = {
+    mega: [
+      "🌟 LEGENDARY! You're unstoppable!",
+      "🔥 ON FIRE! That's a mega streak!",
+      "⚡ PHENOMENAL! Keep it going!",
+      "💫 INCREDIBLE! You're a natural!"
+    ],
+    high: [
+      "🎯 Excellent! You're crushing it!",
+      "🚀 Awesome! Great momentum!",
+      "✨ Fantastic work! Keep going!",
+      "🎨 Brilliant! You've got this!"
+    ],
+    medium: [
+      "👏 Great job! Building momentum!",
+      "💪 Nice work! You're improving!",
+      "⭐ Well done! Keep it up!",
+      "🎪 Sweet! You're getting good!"
+    ],
+    default: [
+      "✅ Perfect! You did it!",
+      "🎉 Success! Well played!",
+      "👍 Nailed it! Great work!",
+      "🌈 Excellent! Moving forward!"
+    ]
+  }
+
+  let category = 'default'
+  if (streak >= 10) category = 'mega'
+  else if (streak >= 5) category = 'high'
+  else if (streak >= 3) category = 'medium'
+
+  const options = messages[category]
+  return options[Math.floor(Math.random() * options.length)]
+}
+
 const SuccessModal = ({ points, streak, onNext }) => {
+  const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    setMessage(getSuccessMessage(streak))
+  }, [streak])
+
   return (
     <motion.div
       className="modal-overlay"
@@ -23,32 +66,57 @@ const SuccessModal = ({ points, streak, onNext }) => {
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Extra celebration for high streaks */}
+        {streak >= 5 && (
+          <motion.div
+            className="streak-burst"
+            initial={{ scale: 0, rotate: 0 }}
+            animate={{
+              scale: [0, 1.5, 1],
+              rotate: [0, 180, 360],
+              opacity: [1, 0.8, 0]
+            }}
+            transition={{ duration: 1.5 }}
+          />
+        )}
+
         <motion.div
           className="success-icon"
           initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.3, type: 'spring', stiffness: 300 }}
+          animate={{ scale: [0, 1.2, 1] }}
+          transition={{ delay: 0.2, type: 'spring', stiffness: 300 }}
         >
           <div className="checkmark-circle">
-            <div className="checkmark">✓</div>
+            <motion.div
+              className="checkmark"
+              animate={{
+                scale: [1, 1.1, 1]
+              }}
+              transition={{
+                duration: 0.5,
+                repeat: 2
+              }}
+            >
+              ✓
+            </motion.div>
           </div>
         </motion.div>
 
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.3 }}
         >
-          Perfect! 🎉
+          {message}
         </motion.h2>
 
         <motion.p
           className="success-message"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.4 }}
         >
-          You matched all the components!
+          {streak >= 5 ? `Amazing ${streak}-streak combo! 🔥` : "You matched all the components!"}
         </motion.p>
 
         <motion.div

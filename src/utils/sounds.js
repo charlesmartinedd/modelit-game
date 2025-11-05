@@ -89,11 +89,16 @@ class SoundManager {
   }
 
   // Success - triumphant chord progression
-  success() {
+  success(streak = 0) {
     const ctx = this.audioContext || new (window.AudioContext || window.webkitAudioContext)()
     this.audioContext = ctx
 
-    const notes = [523.25, 659.25, 783.99, 1046.50] // C5, E5, G5, C6
+    // More intense sound for higher streaks
+    const baseNotes = [523.25, 659.25, 783.99, 1046.50] // C5, E5, G5, C6
+    const megaNotes = [523.25, 659.25, 783.99, 1046.50, 1318.51] // Add E6 for mega streaks
+
+    const notes = streak >= 5 ? megaNotes : baseNotes
+    const volume = Math.min(0.3, 0.2 + (streak * 0.01))
 
     notes.forEach((freq, i) => {
       const oscillator = ctx.createOscillator()
@@ -103,15 +108,20 @@ class SoundManager {
       gainNode.connect(ctx.destination)
 
       oscillator.frequency.value = freq
-      oscillator.type = 'triangle'
+      oscillator.type = streak >= 10 ? 'square' : 'triangle'
 
-      const startTime = ctx.currentTime + i * 0.1
-      gainNode.gain.setValueAtTime(0.2, startTime)
+      const startTime = ctx.currentTime + i * 0.08
+      gainNode.gain.setValueAtTime(volume, startTime)
       gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.3)
 
       oscillator.start(startTime)
       oscillator.stop(startTime + 0.3)
     })
+
+    // Extra sparkle for mega streaks
+    if (streak >= 10) {
+      setTimeout(() => this.playTone(1568, 0.2, 'sine', 0.25), 200)
+    }
   }
 
   // Timer warning - pulsing beep

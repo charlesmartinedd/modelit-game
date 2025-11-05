@@ -165,12 +165,14 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
     const streakBonus = streak * 10
     const totalIterationPoints = basePoints + speedBonus + streakBonus
 
+    const newStreak = streak + 1
     setPoints(prev => prev + totalIterationPoints)
-    setStreak(prev => prev + 1)
+    setStreak(newStreak)
     setShowSuccess(true)
 
-    soundManager.success()
-    triggerConfetti()
+    // Enhanced sound based on streak
+    soundManager.success(newStreak)
+    triggerConfetti(newStreak)
   }
 
   const handleTimeout = () => {
@@ -249,9 +251,10 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
     }
   }
 
-  const triggerConfetti = () => {
-    const colors = ['#0d75bb', '#E67E22', '#27ae60', '#f39c12']
-    const confettiCount = 50
+  const triggerConfetti = (currentStreak = 0) => {
+    const colors = ['#0d75bb', '#E67E22', '#27ae60', '#f39c12', '#9b59b6', '#e74c3c', '#1abc9c']
+    // More confetti for higher streaks!
+    const confettiCount = Math.min(100, 50 + (currentStreak * 5))
 
     for (let i = 0; i < confettiCount; i++) {
       const confetti = document.createElement('div')
@@ -259,6 +262,16 @@ const GameEngine = ({ level, onLevelComplete, totalPoints, onHome }) => {
       confetti.style.left = Math.random() * 100 + '%'
       confetti.style.background = colors[Math.floor(Math.random() * colors.length)]
       confetti.style.animationDelay = Math.random() * 0.3 + 's'
+      confetti.style.width = (Math.random() * 8 + 6) + 'px'
+      confetti.style.height = confetti.style.width
+
+      // Mega streaks get star shapes
+      if (currentStreak >= 10) {
+        confetti.textContent = '⭐'
+        confetti.style.background = 'transparent'
+        confetti.style.fontSize = '16px'
+      }
+
       document.body.appendChild(confetti)
 
       setTimeout(() => confetti.remove(), 3000)
