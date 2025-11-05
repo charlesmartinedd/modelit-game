@@ -9,7 +9,6 @@ const WorkspaceLevel6 = ({
   onAddArrow,
   onRemoveArrow,
   onUpdateComponentState,
-  onAddComponent,
   expectedOutcome = []
 }) => {
   const [mode, setMode] = useState('move')
@@ -279,18 +278,18 @@ const WorkspaceLevel6 = ({
 
   const handleDrop = (e) => {
     e.preventDefault()
-    const componentData = JSON.parse(e.dataTransfer.getData('application/json'))
-    const rect = workspaceRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left - 50
-    const y = e.clientY - rect.top - 50
+    try {
+      const componentData = JSON.parse(e.dataTransfer.getData('application/json'))
+      const rect = workspaceRef.current.getBoundingClientRect()
+      const x = e.clientX - rect.left - 50
+      const y = e.clientY - rect.top - 50
 
-    const tempId = Date.now()
-    setComponentPositions(prev => ({
-      ...prev,
-      [tempId]: { x, y }
-    }))
-
-    onAddComponent(componentData)
+      if (typeof window.currentLevelAddComponent === 'function') {
+        window.currentLevelAddComponent({ ...componentData, _dropPosition: { x, y } })
+      }
+    } catch (err) {
+      console.error('Drop error:', err)
+    }
   }
 
   const handleDragOver = (e) => {

@@ -155,19 +155,17 @@ const WorkspaceLevel8 = ({ iterationData, onModelFixed }) => {
   // Drag and drop handlers
   const handleDrop = (e) => {
     e.preventDefault()
-    const componentData = JSON.parse(e.dataTransfer.getData('application/json'))
-    const rect = workspaceRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left - 50
-    const y = e.clientY - rect.top - 50
+    try {
+      const componentData = JSON.parse(e.dataTransfer.getData('application/json'))
+      const rect = workspaceRef.current.getBoundingClientRect()
+      const x = e.clientX - rect.left - 50
+      const y = e.clientY - rect.top - 50
 
-    const tempId = Date.now()
-    setComponentPositions(prev => ({
-      ...prev,
-      [tempId]: { x, y }
-    }))
-
-    if (onAddComponent) {
-      onAddComponent(componentData)
+      if (typeof window.currentLevelAddComponent === 'function') {
+        window.currentLevelAddComponent({ ...componentData, _dropPosition: { x, y } })
+      }
+    } catch (err) {
+      console.error('Drop error:', err)
     }
   }
 
